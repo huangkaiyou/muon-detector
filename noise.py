@@ -94,11 +94,6 @@ try:
         if abs(ch1_peak_index[0] - ch2_first_peak_index[0]) > 1:
             continue
         
-        # print(time)
-        # #filter first peaks are not happend at a time
-        # if abs(ch1_first_peak_index[0] - ch2_first_peak_index[0]) > 20 : 
-        #     continue
-
         ch1_peak_index = ch1_peak_index
         ch2_first_peak_index = ch2_first_peak_index[0]
         ch1_peak_height = ch1_peak_info['peak_heights']
@@ -161,8 +156,6 @@ try:
 finally:
     f.close()
 # %%
-# left_list_ch2 = np.array(left_list_ch2)
-# left_list_ch2 = left_list_ch2.flatten()
 import math
 
 num_event = 0
@@ -189,84 +182,3 @@ analysis_figure_dir = './analysis_result/noise/'
 # plt.savefig(analysis_figure_dir + f'frame_num {Times} ' + '.jpg')
 plt.show() 
 plt.clf()
-
-
-
-
-#%%
-'''
-start = 0
-frame = 20
-xs = bins[1+start:frame]
-ys = counts[start:frame-1]
-
-
-plt.scatter(xs, ys, label="data",s= 5)
-ax1 = plt.subplot(1,1,1)
-pltSty2(xName = 'Voltage v', yName = 'Entities')
-# ax1.scatter(xs, ys, color = '#070d58', label = 'x(actual)', s = 5)
-ax1.legend(loc = 'best', edgecolor = '#7e7474', fontsize = 12)
-
-plt.tight_layout()
-plt.draw()
-plt.grid(color= 'gray', visible=True)
-# plt.xlabel('t (s)', fontsize= 15)
-# plt.ylabel('V (volt)', fontsize= 15)
-plt.legend()
-# plt.savefig('test.png',dpi= 500)
-plt.show()
-
-
-# %%
-#-----fitting gaussain distribution-----#
-from iminuit import Minuit
-from iminuit.cost import LeastSquares
-# from OuOb import pltSty2
-
-start = 0
-frame = 20
-xs = bins[1+start:frame]
-ys = counts[start:frame-1]
-print()
-# yerror= [np.std(i) for i in data]
-yerror= 1
-
-
-def gaussian(x, mu, sigma, N0): #charge 
-    return N0 * np.exp(-((x-mu)/sigma)**2 / 2)
-
-least_square= LeastSquares(xs, ys, yerror= yerror, model= gaussian)
-m=Minuit(least_square, mu= 0.05, sigma= 0.001, N0= 12e4, )
-# plt.errorbar(xs, ys, yerr= stdev(ys)/ , fmt='')
-m.migrad() 
-m.hesse()
-# plt.errorbar(xs, ys, yerr=yerror, fmt="o", label="data",ms= 3, alpha=0.6, color='brown')
-
-plt.errorbar(xs, ys, yerr=yerror, fmt="o", label="data",ms= 2)
-plt.plot(xs, gaussian(xs, *m.values), label="gaussian", color= 'blue', linestyle= 'dashed')
-#for test
-# plt.scatter(xs, ys, label= 'mean',s=2)
-
-
-fit_info = [
-    f"$\\chi^2$ / $n_\\mathrm{{dof}}$ = {m.fval:.1f} / {len(xs) - m.nfit}",
-]
-for p, v, e in zip(m.parameters, m.values, m.errors):
-    fit_info.append(f"{p} = ${v:.3e} \\pm {e:.3e}$")
-
-
-ax1 = plt.subplot(1,1,1)
-pltSty2(xName = 'Voltage v', yName = 'Entities')
-# ax1.scatter(xs, ys, color = '#070d58', label = 'x(actual)', s = 5)
-ax1.legend(loc = 'best', edgecolor = '#7e7474', fontsize = 12)
-
-plt.tight_layout()
-plt.draw()
-plt.grid(color= 'gray', visible=True)
-# plt.xlabel('t (s)', fontsize= 15)
-# plt.ylabel('V (volt)', fontsize= 15)
-plt.legend(title="\n".join(fit_info))
-# plt.savefig('test.png',dpi= 500)
-plt.show()
-'''
-# %%
